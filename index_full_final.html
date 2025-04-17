@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рецепты</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #add8e6, #dda0dd, #ffc0cb);
+            color: #333;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 30px;
+            background: linear-gradient(to right, #e6007e, #7e2fa0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 1px 1px 1px rgba(255,255,255,0.3);
+        }
+        .start-screen, .instruction-screen {
+            display: none;
+        }
+        .visible {
+            display: block;
+        }
+        .aperol-button {
+            cursor: pointer;
+            margin-bottom: 30px;
+        }
+        .aperol-button img {
+            max-width: 280px;
+            transition: transform 0.2s ease;
+        }
+        .aperol-button img:hover {
+            transform: scale(1.05);
+        }
+        #instruction img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .nav-button {
+            margin: 20px auto;
+            padding: 10px 25px 10px 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(90deg, #ff69b4, #8a2be2);
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+        .nav-button img {
+            height: 24px;
+            width: auto;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <h1>Рецепты</h1>
+
+    <!-- Главный экран -->
+    <div class="start-screen visible" id="start-screen">
+        <div class="aperol-button" onclick="startInstruction(6)">
+            <img src="aperol-button.png" alt="Aperol Spritz">
+        </div>
+    </div>
+
+    <!-- Экран с инструкциями -->
+    <div class="instruction-screen" id="instruction-screen">
+        <div id="instruction"></div>
+        <button class="nav-button" onclick="goBack()">
+            <img src="sinitsa-logo.png" alt="Синица"> Назад на главную
+        </button>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let totalSteps = 6;
+
+        function startInstruction(steps) {
+            currentStep = 1;
+            totalSteps = steps;
+            document.getElementById('start-screen').classList.remove('visible');
+            document.getElementById('instruction-screen').classList.add('visible');
+            showStep();
+        }
+
+        function showStep() {
+            document.getElementById('instruction').innerHTML = `
+                <img src="${currentStep}.png" alt="Шаг ${currentStep}">
+                <div>
+                    ${currentStep > 1 ? '<button class="nav-button" onclick="prevStep()">◀️ Назад</button>' : ''}
+                    ${currentStep < totalSteps ? '<button class="nav-button" onclick="nextStep()">Далее ▶️</button>' : ''}
+                </div>
+            `;
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                showStep();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep();
+            }
+        }
+
+        function goBack() {
+            document.getElementById('instruction-screen').classList.remove('visible');
+            document.getElementById('start-screen').classList.add('visible');
+        }
+    </script>
+</body>
+</html>
